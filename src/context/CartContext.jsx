@@ -50,14 +50,6 @@ export function CartProvider({ children }) {
   const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const checkout = async () => {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-
-    if (!token || !user) {
-      alert("Please log in before placing an order.");
-      return;
-    }
-
     const items = cart.map((item) => ({
       productId: item.id,
       quantity: item.quantity,
@@ -67,9 +59,8 @@ export function CartProvider({ children }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId: user.id, items }),
+      body: JSON.stringify({ items }),
     });
 
     const data = await response.json();

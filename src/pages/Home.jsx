@@ -14,6 +14,7 @@ export default function Home({ searchQuery }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  
   const LIMIT = 12;
 
   useEffect(() => {
