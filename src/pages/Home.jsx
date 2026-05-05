@@ -3,6 +3,8 @@ import ProductCard from "../components/ProductCard";
 import Carousel from "../components/Carousel";
 import { motion, AnimatePresence } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
 export default function Home({ searchQuery }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,10 +19,9 @@ export default function Home({ searchQuery }) {
   useEffect(() => {
     setLoading(true);
     const cat = category === "all" ? "" : `&category=${category}`;
-    fetch(`http://localhost:3000/api/products?page=${page}&limit=${LIMIT}${cat}`)
+    fetch(`${API_URL}/products?page=${page}&limit=${LIMIT}${cat}`)
       .then((r) => r.json())
       .then((data) => {
-        // Map backend fields to what ProductCard expects
         const mapped = data.products.map((p) => ({
           ...p,
           image: p.image,
@@ -33,7 +34,6 @@ export default function Home({ searchQuery }) {
       .catch(() => setLoading(false));
   }, [category, page]);
 
-  // Reset to page 1 when category changes
   useEffect(() => { setPage(1); }, [category]);
 
   const sortLabels = {

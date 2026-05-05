@@ -2,6 +2,8 @@ import { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
 export function CartProvider({ children }) {
 
   const [cart, setCart] = useState(() => {
@@ -61,7 +63,7 @@ export function CartProvider({ children }) {
       quantity: item.quantity,
     }));
 
-    const response = await fetch('http://localhost:3000/api/orders', {
+    const response = await fetch(`${API_URL}/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
 export default function Admin({ searchQuery }) {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -23,7 +25,7 @@ export default function Admin({ searchQuery }) {
   }, [navigate]);
 
   const fetchProducts = () => {
-    fetch("http://localhost:3000/api/products?limit=100")
+    fetch(`${API_URL}/products?limit=100`)
       .then((r) => r.json())
       .then((data) => {
         setProducts(data.products || []);
@@ -37,7 +39,7 @@ export default function Admin({ searchQuery }) {
 
   const deleteProduct = async (id) => {
     if (!confirm("Delete this product?")) return;
-    const res = await fetch(`http://localhost:3000/api/products/${id}`, {
+    const res = await fetch(`${API_URL}/products/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -55,7 +57,7 @@ export default function Admin({ searchQuery }) {
 
   const saveEdit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:3000/api/products/${currentProduct.id}`, {
+    const res = await fetch(`${API_URL}/products/${currentProduct.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({
@@ -76,7 +78,7 @@ export default function Admin({ searchQuery }) {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     setError("");
-    const res = await fetch("http://localhost:3000/api/products", {
+    const res = await fetch(`${API_URL}/products`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({
