@@ -13,7 +13,7 @@ export default function ProductDetails() {
   useEffect(() => {
     fetch(`${API_URL}/products/${id}`)
       .then(res => res.json())
-      .then(data => setProduct(data.product));
+      .then(data => setProduct(data));
   }, [id]);
 
   if (!product) 
